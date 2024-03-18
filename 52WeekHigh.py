@@ -75,7 +75,7 @@ def consolidation_backtesting(period=366):
                         trs[ext_date]=his_data["DateTime"][ind]
                         trs[per_gain]=(trs[res]*100)/(trs[buy]*trs[qty])
                         in_trade=False
-        # trail_stop(ind)
+        trail_stop(ind)
         if in_trade:
             continue
         if is_breaking(ind,period):

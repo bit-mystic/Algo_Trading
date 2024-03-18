@@ -5,15 +5,15 @@ import pandas as pd
 import math
 
 def rn(n, r=0.05):
-  return n - math.fmod(n, r)
+    return n - math.fmod(n, r)
 
-symbol = "TATAMOTORS"
-his_data = pd.read_csv("store.csv")
+symbol = "SBIN"
+his_data = pd.read_csv("store.csv",header=0)
 total = len(his_data)
 total_amount = 100000
-risk_reward=10
-sl_block=2
-riskpertrade=1000
+risk_reward=3
+sl_spread=2
+riskpertrade=0.02
 
 qty = 0
 buy = 1
@@ -51,16 +51,17 @@ def is_breaking(ind,per,period):
 def trail_stop(ind):
     for trs in trades:
         if trs[isAct]==True:
-            if his_data["Close"][ind]>(trs[sli]+1.5*sl_block):
-                trs[sli]=rn(trs[sli]+sl_block)
+            if his_data["Close"][ind]>(trs[sli]+1.5*sl_spread):
+                trs[sli]=rn(trs[sli]+sl_spread)
                 trs[sli]=rn(trs[sli]*0.99)
 
 
-def consolidation_backtesting(period=15,per=0.5):
-    global sl_block
+def consolidation_backtesting(period=30,per=0.5):
+    global sl_spread
+    global total_amount
     in_trade = False
     for ind in range(period+1,total-1):
-        # curr_close = his_data["Close"][ind]
+        curr_close = his_data["Close"][ind]
         curr_open = his_data["Open"][ind]
         curr_high = his_data["High"][ind]
         curr_low = his_data["Low"][ind]
@@ -72,7 +73,9 @@ def consolidation_backtesting(period=15,per=0.5):
                     else:
                         trs[ext]=trs[sli]
                     trs[isAct] = False
-                    trs[res]=trs[ext]*trs[qty]*0.998-trs[buy]*trs[qty]*0.998-15
+                    trs[res]=trs[ext]*trs[qty]*0.998-trs[buy]*trs[qty]*1.005-15
+                    # total_amount=total_amount+trs[buy]*trs[qty]*1.005
+                    total_amount=total_amount+trs[res]
                     trs[ext_date]=his_data["DateTime"][ind]
                     trs[per_gain]=(trs[res]*100)/(trs[buy]*trs[qty])
                     in_trade = False
@@ -83,7 +86,9 @@ def consolidation_backtesting(period=15,per=0.5):
                         else:
                             trs[ext] = trs[tgt]
                         trs[isAct] = False
-                        trs[res]=trs[ext]*trs[qty]*0.9988-trs[buy]*trs[qty]*0.999-15
+                        trs[res]=trs[ext]*trs[qty]*0.9988-trs[buy]*trs[qty]*1.005-15
+                        # total_amount=total_amount+trs[buy]*trs[qty]*1.005
+                        total_amount=total_amount+trs[res]
                         trs[ext_date]=his_data["DateTime"][ind]
                         trs[per_gain]=(trs[res]*100)/(trs[buy]*trs[qty])
                         in_trade=False
@@ -98,10 +103,13 @@ def consolidation_backtesting(period=15,per=0.5):
             if curr_open>ma_clos:
                 buy_price=rn(curr_open*1.001)
                 sl = rn(ma_clos*0.98)
-            sl_block=rn(buy_price-sl)
-            target = rn(buy_price+risk_reward*(sl_block))
-            quantity = int(riskpertrade/(sl_block))
+            sl_spread=rn(buy_price-sl)
+            target = rn(buy_price+risk_reward*(sl_spread))
+            quantity = int((riskpertrade*total_amount)/(sl_spread))
+            if quantity==0:
+                continue;
             in_trade = True
+            # total_amount=total_amount-buy_price*quantity*1.005
             trades.append([quantity,buy_price,his_data["DateTime"][ind],sl,target,00,his_data["DateTime"][ind],00,0,True])
             indices.append(ind)
 
@@ -112,6 +120,7 @@ if len(trades)>0:
     trades.columns = ["Quantity","Buy_Price","Date_Time(Entry)","Stop_Loss","Target","Exit_Price","Date_Time(Exit)","Result","(Gain/Loss)%","IsActive"]
 # print("The results after backtesting this stradegy on {} is:".format(symbol))
 # print(trades)
+print(total_amount)
 
 file_name = "Consolidation_"+symbol+'_Result.xlsx'
 trades.to_excel(file_name)

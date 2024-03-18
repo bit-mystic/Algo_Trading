@@ -15,17 +15,17 @@ client_id="L7YNNXJALM-100"
 
 fyers = fyersModel.FyersModel(client_id=client_id, token=access_token,is_async=False, log_path=os.getcwd())
 
-symbol = "NSE:TATAMOTORS-EQ"
-since = date(1998,1,1)
-to = date(2023,12,31)
+symbol = "NSE:SBIN-EQ"
+since = date.today() - relativedelta(days=10)
+to = date.today()
 s_since = since
 
-till = since + relativedelta(years=1)
+till = since + relativedelta(years=1,days=-1)
 if till>to:
     till = to
 data = {
     "symbol":symbol,
-    "resolution":"1D",
+    "resolution":"5",
     "date_format":"1",
     "range_from":str(since),
     "range_to":str(till),
@@ -37,7 +37,7 @@ his_data = pd.DataFrame(response["candles"])
 since = till
 
 while since<to:
-    till = since + relativedelta(years=1)
+    till = since + relativedelta(years=1,days=-1)
     if till>to:
         till = to
     data = {
@@ -51,7 +51,7 @@ while since<to:
     response = fyers.history(data=data)
     s_data = pd.DataFrame(response["candles"])
     his_data=pd.concat([his_data,s_data]).reset_index(drop=True)
-    since = till
+    since = till 
 
 his_data.columns = ["DateTime","Open","High","Low","Close","Volume"]
 his_data["DateTime"]=pd.to_datetime(his_data["DateTime"],unit='s')
