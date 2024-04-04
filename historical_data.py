@@ -16,7 +16,8 @@ client_id="L7YNNXJALM-100"
 fyers = fyersModel.FyersModel(client_id=client_id, token=access_token,is_async=False, log_path=os.getcwd())
 
 symbol = "NSE:SBIN-EQ"
-since = date.today() - relativedelta(days=10)
+candle_size = "5"
+since = date.today() - relativedelta(days=25)
 to = date.today()
 s_since = since
 
@@ -25,7 +26,7 @@ if till>to:
     till = to
 data = {
     "symbol":symbol,
-    "resolution":"5",
+    "resolution":candle_size,
     "date_format":"1",
     "range_from":str(since),
     "range_to":str(till),
@@ -42,7 +43,7 @@ while since<to:
         till = to
     data = {
         "symbol":symbol,
-        "resolution":"1D",
+        "resolution":candle_size,
         "date_format":"1",
         "range_from":str(since),
         "range_to":str(till),
