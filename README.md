@@ -59,4 +59,4 @@ To get started with the Algo_Trading repository, simply clone the repository to 
 
 Contributions to this project are welcome! If you have any ideas, suggestions, or improvements, feel free to open an issue or submit a pull request. Let's collaborate and make algorithmic trading more accessible to everyone.
 
-Happy trading! 📈💰
+Hope you find this repository helpful.
