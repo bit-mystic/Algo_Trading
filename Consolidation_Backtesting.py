@@ -1,5 +1,5 @@
-# from datetime import datetime
-# start = datetime.now()
+# from Date import Date
+# start = Date.now()
 
 import pandas as pd 
 import math
@@ -8,7 +8,7 @@ def rn(n, r=0.05):
     return n - math.fmod(n, r)
 
 symbol = "SBIN"
-his_data = pd.read_csv("store.csv",header=0)
+his_data = pd.read_csv("store.csv",header=0,index_col=0)
 total = len(his_data)
 total_amount = 100000
 risk_reward=3
@@ -56,7 +56,7 @@ def trail_stop(ind):
                 trs[sli]=rn(trs[sli]*0.99)
 
 
-def consolidation_backtesting(period=30,per=0.5):
+def consolidation_backtesting(period=15,per=0.25):
     global sl_spread
     global total_amount
     in_trade = False
@@ -76,7 +76,7 @@ def consolidation_backtesting(period=30,per=0.5):
                     trs[res]=trs[ext]*trs[qty]*0.998-trs[buy]*trs[qty]*1.005-15
                     # total_amount=total_amount+trs[buy]*trs[qty]*1.005
                     total_amount=total_amount+trs[res]
-                    trs[ext_date]=his_data["DateTime"][ind]
+                    trs[ext_date]=his_data["Date"][ind]
                     trs[per_gain]=(trs[res]*100)/(trs[buy]*trs[qty])
                     in_trade = False
                 else:
@@ -89,7 +89,7 @@ def consolidation_backtesting(period=30,per=0.5):
                         trs[res]=trs[ext]*trs[qty]*0.9988-trs[buy]*trs[qty]*1.005-15
                         # total_amount=total_amount+trs[buy]*trs[qty]*1.005
                         total_amount=total_amount+trs[res]
-                        trs[ext_date]=his_data["DateTime"][ind]
+                        trs[ext_date]=his_data["Date"][ind]
                         trs[per_gain]=(trs[res]*100)/(trs[buy]*trs[qty])
                         in_trade=False
         # trail_stop(ind)
@@ -110,7 +110,7 @@ def consolidation_backtesting(period=30,per=0.5):
                 continue;
             in_trade = True
             # total_amount=total_amount-buy_price*quantity*1.005
-            trades.append([quantity,buy_price,his_data["DateTime"][ind],sl,target,00,his_data["DateTime"][ind],00,0,True])
+            trades.append([quantity,buy_price,his_data["Date"][ind],sl,target,00,his_data["Date"][ind],00,0,True])
             indices.append(ind)
 
 consolidation_backtesting()
@@ -127,7 +127,7 @@ trades.to_excel(file_name)
 
 print("The results after backtesting this stradegy on {} is successfully saved in the file specified.".format(symbol))
 
-# end = datetime.now()
+# end = Date.now()
 
 # td = (end - start).total_seconds() * 10**3
 # print(f"The time of execution of above program is : {td:.03f}ms")

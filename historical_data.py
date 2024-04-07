@@ -16,8 +16,8 @@ client_id="L7YNNXJALM-100"
 fyers = fyersModel.FyersModel(client_id=client_id, token=access_token,is_async=False, log_path=os.getcwd())
 
 symbol = "NSE:SBIN-EQ"
-candle_size = "5"
-since = date.today() - relativedelta(days=25)
+candle_size = "D"
+since = date.today() - relativedelta(years=20)
 to = date.today()
 s_since = since
 
@@ -54,8 +54,8 @@ while since<to:
     his_data=pd.concat([his_data,s_data]).reset_index(drop=True)
     since = till 
 
-his_data.columns = ["DateTime","Open","High","Low","Close","Volume"]
-his_data["DateTime"]=pd.to_datetime(his_data["DateTime"],unit='s')
+his_data.columns = ["Date","Open","High","Low","Close","Volume"]
+his_data["Date"]=pd.to_datetime(his_data["Date"],unit='s')
 
 his_data.to_csv("store.csv")
 
