@@ -14,10 +14,9 @@ from dateutil.relativedelta import relativedelta
 client_id="L7YNNXJALM-100"
 
 fyers = fyersModel.FyersModel(client_id=client_id, token=access_token,is_async=False, log_path=os.getcwd())
-
-symbol = "NSE:SBIN-EQ"
+symbol = "NSE:NIFTYBANK-INDEX"
 candle_size = "D"
-since = date.today() - relativedelta(years=20)
+since = date.today() - relativedelta(years=10)
 to = date.today()
 s_since = since
 
@@ -35,7 +34,7 @@ data = {
 response = fyers.history(data=data)
 his_data = pd.DataFrame(response["candles"])
 
-since = till
+since = till + relativedelta(days=1)
 
 while since<to:
     till = since + relativedelta(years=1,days=-1)
@@ -52,15 +51,12 @@ while since<to:
     response = fyers.history(data=data)
     s_data = pd.DataFrame(response["candles"])
     his_data=pd.concat([his_data,s_data]).reset_index(drop=True)
-    since = till 
+    since = till + relativedelta(days=1) 
 
 his_data.columns = ["Date","Open","High","Low","Close","Volume"]
 his_data["Date"]=pd.to_datetime(his_data["Date"],unit='s')
-
 his_data.to_csv("store.csv")
-
 print("Data Successfully Fetched from {} to {} for {}.".format(s_since,to,symbol))
-
 end = dt.now()
 td = (end - start).total_seconds() * 10**3
 print(f"The time of execution of above program is : {td:.03f}ms")
