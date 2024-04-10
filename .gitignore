@@ -1,4 +1,4 @@
 fyersApi.log
-acesstoken.txt
-gen_accesstoken.py
-gen_authcode.py
+Credentials
+accesstoken.txt
+*.xlsx

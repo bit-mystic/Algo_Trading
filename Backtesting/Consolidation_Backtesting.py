@@ -1,5 +1,5 @@
-# from Date import Date
-# start = Date.now()
+from  datetime import datetime as dt
+start = dt.now()
 
 import pandas as pd 
 import math
@@ -127,8 +127,8 @@ trades.to_excel(file_name)
 
 print("The results after backtesting this stradegy on {} is successfully saved in the file specified.".format(symbol))
 
-# end = Date.now()
+end = dt.now()
 
-# td = (end - start).total_seconds() * 10**3
-# print(f"The time of execution of above program is : {td:.03f}ms")
+td = (end - start).total_seconds() * 10**3
+print(f"The time of execution of above program is : {td:.03f}ms")
 
