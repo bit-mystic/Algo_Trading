@@ -48,6 +48,7 @@ ecos==2.0.12
 et-xmlfile==1.1.0
 executing==2.0.1
 fastjsonschema==2.18.1
+filelock==3.13.4
 Flask==3.0.0
 flatbuffers==24.3.25
 fonttools==4.46.0
@@ -68,6 +69,7 @@ html5lib==1.1
 huepy==1.2.1
 idna==2.10
 importlib-metadata==7.0.1
+insta-scrape==2.1.2
 ipykernel==6.26.0
 ipython==8.17.2
 ipython-genutils==0.2.0
@@ -113,6 +115,7 @@ mistune==3.0.2
 ml-dtypes==0.3.2
 more-itertools==10.1.0
 MouseInfo==0.1.3
+mpmath==1.3.0
 multidict==6.0.4
 multitasking==0.0.11
 myhdl==0.11.45
@@ -121,6 +124,7 @@ nbclient==0.8.0
 nbconvert==7.10.0
 nbformat==5.9.2
 nest-asyncio==1.5.8
+networkx==3.3
 nh3==0.2.15
 notebook==7.0.6
 notebook_shim==0.2.3
@@ -210,6 +214,7 @@ sqlglot==22.5.0
 stack-data==0.6.3
 statsforecast==1.7.3
 statsmodels==0.14.1
+sympy==1.12
 tensorboard==2.16.2
 tensorboard-data-server==0.7.2
 tensorflow==2.16.1
@@ -219,6 +224,7 @@ termcolor==2.4.0
 terminado==0.17.1
 threadpoolctl==3.3.0
 tinycss2==1.2.1
+torch==2.2.2
 tornado==6.3.3
 tqdm==4.66.2
 traitlets==5.13.0
